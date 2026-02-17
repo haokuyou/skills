@@ -1,0 +1,13 @@
+// Based on upstream: docs/uts/uts_diff_ts.md
+// Prefer `type` for object literals to avoid accidental UTSJSONObject usage.
+
+type Person = {
+  name: string
+  age: number
+}
+
+export function makePerson(name: string, age: number): Person {
+  const person: Person = { name, age }
+  return person
+}
+

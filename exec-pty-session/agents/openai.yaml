@@ -1,0 +1,4 @@
+interface:
+  display_name: "Exec Command TTY Sessions"
+  short_description: "Avoid write_stdin failures with tty sessions."
+  default_prompt: "Handle interactive exec_command sessions and write_stdin usage safely, including tty=true and session_id reuse."

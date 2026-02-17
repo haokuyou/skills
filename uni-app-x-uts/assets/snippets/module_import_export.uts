@@ -1,0 +1,14 @@
+// Based on upstream: docs/uts/module.md
+
+export const name: string = "square"
+
+export function draw(): void {
+  // TODO: implement
+}
+
+export default class Canvas {
+  draw(): void {
+    // TODO: implement
+  }
+}
+

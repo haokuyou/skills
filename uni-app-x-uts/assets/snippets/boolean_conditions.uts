@@ -1,0 +1,11 @@
+// Based on upstream: docs/uts/uts_diff_ts.md
+// UTS conditions must be boolean; avoid truthy/falsy shortcuts.
+
+export function isPositive(x: number): boolean {
+  return x > 0
+}
+
+export function pickOrEmpty(arr: Array<string> | null): Array<string> {
+  return arr != null ? arr : []
+}
+

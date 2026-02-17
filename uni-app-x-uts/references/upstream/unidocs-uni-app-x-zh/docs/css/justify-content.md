@@ -1,0 +1,20 @@
+## justify-content
+
+
+<!-- CSSJSON.justify-content.description -->
+
+<!-- CSSJSON.justify-content.syntax -->
+
+<!-- CSSJSON.justify-content.restrictions -->
+
+<!-- CSSJSON.justify-content.values -->
+
+<!-- CSSJSON.justify-content.defaultValue -->
+
+<!-- CSSJSON.justify-content.unixTags -->
+
+<!-- CSSJSON.justify-content.compatibility -->
+
+<!-- CSSJSON.justify-content.example -->
+
+<!-- CSSJSON.justify-content.reference -->

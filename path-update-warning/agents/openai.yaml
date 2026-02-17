@@ -1,0 +1,4 @@
+interface:
+  display_name: "PATH Update Warning Mitigation"
+  short_description: "Handle PATH update warnings in exec_command runs."
+  default_prompt: "Mitigate exec_command PATH update warnings by using absolute paths or inline PATH values."

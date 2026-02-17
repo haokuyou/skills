@@ -1,0 +1,4 @@
+interface:
+  display_name: "HBuilderX 云打包排错"
+  short_description: "归一化云打包编译错误并输出文件定位清单与模块线索说明"
+  default_prompt: "分析 HBuilderX 云打包编译错误日志，输出归一化签名和定位结论。"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project Doc Sync"
+  short_description: "Read and maintain root README.md and log.md during coding work."
+  default_prompt: "Read root README.md and log.md before coding; after each project change, update both docs and keep code as source of truth."

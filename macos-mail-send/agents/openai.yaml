@@ -1,0 +1,4 @@
+interface:
+  display_name: "Send Email (Mail.app)"
+  short_description: "Send an email using macOS Mail.app via AppleScript (osascript)."
+  default_prompt: "Send an email using macOS Mail.app. Collect to/cc/bcc, subject, body, and optional attachments; send immediately by default; use draft mode only if the user asks for a draft."
