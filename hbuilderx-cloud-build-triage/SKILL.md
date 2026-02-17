@@ -16,6 +16,7 @@ description: 解析 HBuilderX 云打包/云编译错误日志，抽取 UTS/原�
    - `$HOME/.codex/skills/hbuilderx-cloud-build-triage/scripts/triage_cloud_build_log.py <log-file>`
 3. 依据输出的 `FILE:LINE` 与 `SIGNATURE` 回溯到 UTS 插件或生成代码位置。
 4. 若涉及 `uni_modules/native-waterfall` 或 `app-ios/app-android`，在结论中标注平台与模块范围。
+5. 若日志包含 `Error code` / `Error message` 或 UTS 已知问题链接（如 error18），保留对应行并指出需参考 UTS 已知问题文档（参见 `uni-app-x-uts`）。
 
 ## 规则
 
@@ -35,6 +36,7 @@ description: 解析 HBuilderX 云打包/云编译错误日志，抽取 UTS/原�
 - `ERRORS`: 归一化后的错误条目（含文件与行号）
 - `SIGNATURES`: 错误签名列表（去除 __UNI__ hash 与时间戳）
 - `SUSPECT MODULES`: 可能涉及的 uni_modules
+- `NOFILE` 行：无文件路径的错误提示（例如 `Error code` / `Error message` / error18）
 
 ## 触发示例
 

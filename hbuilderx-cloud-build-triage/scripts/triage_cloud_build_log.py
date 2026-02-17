@@ -55,6 +55,9 @@ def main() -> int:
                 if mod:
                     modules[mod] += 1
         else:
+            lower_line = line.lower()
+            if "error code" in lower_line or "error message" in lower_line or "error18" in lower_line:
+                errors.append(f"NOFILE:-:- | {line.strip()}")
             sig = normalize(line.strip())
             signatures[sig] += 1
 
