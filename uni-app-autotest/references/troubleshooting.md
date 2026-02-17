@@ -167,3 +167,47 @@ cat env.js
 
 1. 若改写来自测试工具，优先恢复到仓库基线。
 2. 除非用户明确要求，不要持久化这类配置变更。
+
+
+## Test suite failed to run / Test Suites 失败
+
+现象示例：
+- `Test suite failed to run`
+- `Test Suites: 1 failed, 1 total`
+
+处理建议：
+
+1. 先从 `uniapp.test` 日志提取失败上下文，不要盲修：
+
+```bash
+python3 $HOME/.codex/skills/uni-app-autotest/scripts/extract-uniapp-failures.py   /path/to/uniapp.test.log
+```
+
+2. 优先定位首个失败块，常见为语法错误、模块缺失、测试入口路径错误。
+3. 若失败块仅出现在 `*.test.js`，优先修测试，不要先动业务代码。
+
+
+
+## 日志出现 error: [Circular *1]
+
+现象示例：
+- `error: [Circular *1]`
+
+处理建议：
+
+1. 这是循环引用的日志输出噪音，不等同于真实异常原因。
+2. 先在同一失败块内向上寻找首个非循环错误信息。
+3. 若需要复现，请避免对错误对象做 `JSON.stringify`，改用 `util.inspect` 或只打印 `message/stack`。
+
+
+
+## Android SELinux 审计 denials（boot_mode）
+
+现象示例：
+- `avc: denied { read } for name="boot_mode" ...`
+
+处理建议：
+
+1. 这是系统审计噪音，通常不影响测试逻辑。
+2. 若无崩溃/断言失败，可忽略该行并继续分析真实失败块。
+

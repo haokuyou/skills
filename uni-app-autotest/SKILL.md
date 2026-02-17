@@ -110,20 +110,22 @@ description: 使用 @dcloudio/hbuilderx-cli 与 HBuilderX uni-app 自动化测�
 3. iOS 出现安装失败或架构不匹配时，先运行 `references/troubleshooting.md` 的 iOS 检查命令并阻塞返回。
 4. 纯环境问题导致失败时，输出精确阻塞点与人工步骤。
 5. 断言失败时，先判断业务行为是否正确，再决定修测还是修业务。
-6. 发现平台参数异常循环（按单字符逐个运行）时，立即停止当前运行并检查 `env.js` 污染。
-7. 连续出现“无进展执行”时（超时或无新证据），停止尝试并返回阻塞，不继续叠加新策略。
-8. iOS 预检失败后不得继续“强行执行”测试命令，除非用户明确要求试跑。
-9. iOS 预检失败后，不得“先补测试再等环境修复”；默认保持代码不变并返回阻塞结论。
-10. Android 运行时连接失败（`Failed to connect to runtime`）按环境阻塞处理，不归类为断言失败。
-11. Android 若出现 `Port 9520 is in use`（或 `AUTOTEST_ANDROID_PORT` 对应端口冲突），先释放端口再重跑，不做代码改动。
-12. iOS 若出现 `Port 9520 is in use`（或 `AUTOTEST_IOS_PORT` 对应端口冲突），先释放端口再重跑，不做代码改动。
-13. `CODE_EDIT_ALLOWED=false` 或 `RUN_STATUS=BLOCKED` 后，禁止手工编辑项目文件（包括 `jest.config.js`、`env.js`）；仅允许只读诊断与回退输出。
+6. 出现 "Test suite failed to run" 或 "Test Suites: X failed" 时，优先用 `extract-uniapp-failures.py` 提取失败块，再决定修测或修环境。
+7. 发现平台参数异常循环（按单字符逐个运行）时，立即停止当前运行并检查 `env.js` 污染。
+8. 连续出现“无进展执行”时（超时或无新证据），停止尝试并返回阻塞，不继续叠加新策略。
+9. iOS 预检失败后不得继续“强行执行”测试命令，除非用户明确要求试跑。
+10. iOS 预检失败后，不得“先补测试再等环境修复”；默认保持代码不变并返回阻塞结论。
+11. Android 运行时连接失败（`Failed to connect to runtime`）按环境阻塞处理，不归类为断言失败。
+12. Android 若出现 `Port 9520 is in use`（或 `AUTOTEST_ANDROID_PORT` 对应端口冲突），先释放端口再重跑，不做代码改动。
+13. iOS 若出现 `Port 9520 is in use`（或 `AUTOTEST_IOS_PORT` 对应端口冲突），先释放端口再重跑，不做代码改动。
+14. `CODE_EDIT_ALLOWED=false` 或 `RUN_STATUS=BLOCKED` 后，禁止手工编辑项目文件（包括 `jest.config.js`、`env.js`）；仅允许只读诊断与回退输出。
 
 ## 资源映射
 
 - `scripts/bootstrap-autotest.sh`：初始化 npm 依赖与可选脚本。
 - `scripts/preflight-autotest.sh`：运行前预检（含 iOS 运行时与架构检查）。
 - `scripts/run-autotest.sh`：按平台运行测试，支持单用例。
+- `scripts/extract-uniapp-failures.py`：从 uniapp.test 日志中提取失败块（Test suite failed to run 等）。
 - `scripts/fallback-autotest.sh`：预检阻塞后的非侵入式回退检查与可复跑命令输出。
 - `scripts/find-native-waterfall.sh`：定位 native-waterfall 相关页面与测试文件（只读扫描）。
 - `references/official-doc.md`：官方安装与命令摘要。

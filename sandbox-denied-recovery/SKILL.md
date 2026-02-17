@@ -15,6 +15,7 @@ Quick checks and a small probe script to confirm path access, then rerun command
 2. Re-run the command with `workdir` set to a known workspace root.
 3. Probe access with the script below before retrying risky commands.
 4. If access is still denied, ask the user for an allowed path or move/copy files into the workspace.
+5. When `find` or recursive scans hit macOS protected folders ("Operation not permitted"), use `safe_find.sh` to prune protected paths and retry.
 
 ## Script: check path access
 
@@ -23,6 +24,15 @@ Use `scripts/check_path_access.sh` to confirm read/write/execute permissions.
 ```bash
 /Users/chappie/.codex/skills/sandbox-denied-recovery/scripts/check_path_access.sh \
   "/absolute/path/to/check"
+```
+
+## Script: safe find
+
+Use `scripts/safe_find.sh` to avoid macOS protected folders when scanning.
+
+```bash
+/Users/chappie/.codex/skills/sandbox-denied-recovery/scripts/safe_find.sh \
+  "/Users/you/project" "*.log"
 ```
 
 ## Notes
