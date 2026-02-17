@@ -53,4 +53,6 @@ Draft:
 - Mail.app must have at least one account configured, otherwise sending will fail.
 - The first run will usually trigger a macOS permission prompt (Terminal/osascript controlling Mail). If blocked, enable it in:
   System Settings -> Privacy & Security -> Automation -> allow your terminal app to control Mail.
+- If Apple Events permission is denied (for example `Not authorized to send Apple events` / `-1743`), use `smtp-mail-send` as fallback for deterministic delivery:
+  `python3 /Users/chappie/.codex/skills/smtp-mail-send/scripts/send_smtp_mail.py ...`
 - Body is plain text. If the user needs HTML formatting, treat that as out of scope unless you extend the script.

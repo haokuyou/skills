@@ -1,0 +1,4 @@
+interface:
+  display_name: "SMTP Mail Send"
+  short_description: "Send email via SMTP with env-based credentials."
+  default_prompt: "Send an email via SMTP using environment-provided credentials; support to/cc/bcc, subject, body, and optional attachments."

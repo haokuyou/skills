@@ -1,4 +1,4 @@
 interface:
   display_name: "Session Log Triage"
-  short_description: "Cluster recent session failures from .codex session logs."
-  default_prompt: "Scan recent session logs, normalize errors, cluster counts, and report top repeated failure patterns with excerpts."
+  short_description: "Cluster repeated failures and recurring user asks from session logs."
+  default_prompt: "Scan recent session logs, normalize tool-failure lines, cluster top repeated issues, and include repeated user request patterns with excerpts."

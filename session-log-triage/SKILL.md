@@ -7,7 +7,7 @@ description: Scan recent Codex session logs (.jsonl) under ~/.codex/sessions, no
 
 ## Overview
 
-Identify high-frequency failure patterns in recent session logs with deterministic clustering and short excerpts.
+Identify high-frequency failure patterns and repeated user requests from recent session logs with deterministic clustering and short excerpts.
 
 ## Quick Start
 
@@ -22,12 +22,25 @@ python3 /Users/chappie/.codex/skills/session-log-triage/scripts/triage_sessions.
   --json
 ```
 
+Target one failure family with custom keywords:
+
+```bash
+python3 /Users/chappie/.codex/skills/session-log-triage/scripts/triage_sessions.py \
+  --root /Users/chappie/.codex/sessions \
+  --days 7 \
+  --keywords "write_stdin failed|Sandbox\\(Denied|could not update PATH|Operation not permitted \\(os error 1\\)" \
+  --max-classes 8 \
+  --no-user-requests \
+  --json
+```
+
 ## Workflow
 
 1. Run `triage_sessions.py` with a 7-day window (or the requested window).
-2. Use `clusters` to pick the top 3-5 repeated issues.
-3. For each cluster, copy 1-3 sample lines with file path + line number into the report.
-4. Map each cluster to existing skills; update or create skills when a gap is confirmed.
+2. Use `clusters` to pick the top 3-5 repeated failure signatures.
+3. Use `user_request_clusters` to capture repeated user asks that should map to stronger trigger phrasing.
+4. For each cluster, copy 1-3 sample lines with file path + line number into the report.
+5. Map each cluster to existing skills; update or create skills when a gap is confirmed.
 
 ## Script Reference
 
@@ -35,13 +48,18 @@ python3 /Users/chappie/.codex/skills/session-log-triage/scripts/triage_sessions.
 
 - `--root`: sessions directory (default `~/.codex/sessions`)
 - `--days`: lookback window in days (default `7`)
-- `--keywords`: regex used for matching (default covers error/failed/timeout/sandbox/AppleScript)
+- `--keywords`: regex used for failure matching (default covers failed/exception/timeout/sandbox/permission/AppleScript)
 - `--max-classes`: number of clusters to return (default `5`)
 - `--max-samples`: samples per cluster (default `3`)
-- `--exclude-types`: comma-separated JSON event types to skip (default `turn_context,session_meta`)
+- `--max-user-classes`: number of user-request clusters (default `5`)
+- `--max-user-samples`: samples per user cluster (default `3`)
+- `--min-user-count`: minimum count for user clusters (default `2`)
+- `--no-user-requests`: disable user-request clustering
+- `--exclude-types`: comma-separated JSON event types to skip (default `turn_context,session_meta,compacted`)
 - `--json`: emit JSON for downstream reporting
 
 ## Notes
 
+- The script prioritizes `function_call_output` / `custom_tool_call_output` so failures come from tool outputs instead of prompt boilerplate.
 - The script normalizes paths, timestamps, UUIDs, hex tokens, PIDs, and large numbers to improve clustering.
 - Keep excerpts short; avoid more than 25 lines per cluster in reports.
