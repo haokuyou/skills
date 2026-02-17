@@ -9,7 +9,7 @@ FILE_RE = re.compile(
     r"(?::(?P<line>\\d+))?(?::(?P<col>\\d+))?"
 )
 ERROR_HINT_RE = re.compile(
-    r"(error|exception|failed|compile|compilation|unresolved reference|no value passed|build failed)",
+    r"(error|exception|failed|compile|compilation|unresolved reference|no value passed|build failed|error code|error message)",
     re.IGNORECASE,
 )
 UNI_HASH_RE = re.compile(r"__UNI__[A-Fa-f0-9]+")
