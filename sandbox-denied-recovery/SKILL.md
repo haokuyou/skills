@@ -16,6 +16,8 @@ Quick checks and a small probe script to confirm path access, then rerun command
 3. Probe access with the script below before retrying risky commands.
 4. If access is still denied, ask the user for an allowed path or move/copy files into the workspace.
 5. When `find` or recursive scans hit macOS protected folders ("Operation not permitted"), use `safe_find.sh` to prune protected paths and retry.
+6. If a command fails with `permission denied` due to missing executable bit, run `chmod +x <PATH>` then retry.
+7. If the denied path is outside the workspace root, ask for a new allowed root and avoid escalating permissions.
 
 ## Script: check path access
 
@@ -39,3 +41,4 @@ Use `scripts/safe_find.sh` to avoid macOS protected folders when scanning.
 
 - Do not use `sandbox_permissions` (policy forbids it). Adjust `workdir` and paths instead.
 - Prefer narrow, single-purpose commands when retriable access is uncertain.
+- For apply_patch failures due to missing files, re-check the path with `ls` or `rg --files` before retrying.

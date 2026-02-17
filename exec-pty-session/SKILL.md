@@ -16,6 +16,12 @@ Keep interactive exec_command runs alive with a TTY-backed session so write_stdi
 3. Use write_stdin with that `session_id` for all subsequent input.
 4. If you see `stdin is closed` or `Unknown process id`, restart the command with `tty=true` and retry.
 
+## Recovery checklist
+
+- If you plan to call write_stdin, start with `tty=true` on the first exec_command.
+- Keep the process alive (use a shell or a long-running command) before sending input.
+- On `write_stdin failed: stdin is closed`, re-run the command with `tty=true` and reuse the new `session_id`.
+
 ## Examples
 
 Start an interactive command:
