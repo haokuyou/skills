@@ -15,6 +15,7 @@ Keep interactive exec_command runs alive with a TTY-backed session so write_stdi
 2. Capture the returned `session_id` from exec_command.
 3. Use write_stdin with that `session_id` for all subsequent input.
 4. If you see `stdin is closed` or `Unknown process id`, restart the command with `tty=true` and retry.
+5. Prefer launching REPLs or long-running CLIs (ssh, python, node, npm, pip) with `tty=true` if you might need stdin later.
 
 ## Recovery checklist
 

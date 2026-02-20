@@ -1,4 +1,4 @@
 interface:
   display_name: "Sandbox Denied Recovery"
-  short_description: "Recover from sandbox denied exec_command runs."
-  default_prompt: "Diagnose and recover from exec_command sandbox denied errors with safe path and workdir adjustments."
+  short_description: "Recover from sandbox denied or policy-blocked exec_command runs."
+  default_prompt: "Diagnose and recover from exec_command sandbox denied or blocked-by-policy errors with safe path and workdir adjustments."
