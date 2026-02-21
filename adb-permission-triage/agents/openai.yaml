@@ -1,0 +1,4 @@
+interface:
+  display_name: "ADB Permission Triage"
+  short_description: "ADB SecurityException triage and permission fallbacks"
+  default_prompt: "Triage adb Permission Denial/SecurityException output, extract permission names, and suggest safe fallbacks."

@@ -31,6 +31,14 @@ When you generate code, keep these constraints unless the upstream docs explicit
 - Prefer "define before use" across the codebase for cross-platform consistency (see UTS `README.md`).
 - If a behavior differs by platform (Android/iOS/Web/Harmony), surface it in the answer and point to the upstream doc section.
 
+## Quick Scan For Non-Null Assertions
+
+When you need a fast list of postfix `!` assertions in UTS/UVue code (often reviewed for crash risk), run:
+
+```bash
+python3 /Users/chappie/.codex/skills/uni-app-x-uts/scripts/scan_nonnull_assertions.py --root /path/to/project
+```
+
 ## Reference Map
 
 Start here to find the right authoritative file quickly:
@@ -51,6 +59,7 @@ For `.uvue` pages and project structure context, also see:
 
 ### scripts/
 - `scripts/search_upstream.sh`: fast search in the upstream docs snapshot.
+- `scripts/scan_nonnull_assertions.py`: scan for postfix non-null assertions in `.uts`/`.uvue` files.
 
 ### references/
 - `references/upstream/`: snapshot of the official docs used as authority.
