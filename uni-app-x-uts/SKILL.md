@@ -39,6 +39,17 @@ When you need a fast list of postfix `!` assertions in UTS/UVue code (often revi
 python3 /Users/chappie/.codex/skills/uni-app-x-uts/scripts/scan_nonnull_assertions.py --root /path/to/project
 ```
 
+## Timer Handle Null-Safety
+
+When you see patterns like `clearTimeout(tid.value!)`, replace with a null-safe guard:
+
+```uts
+if (tid.value != null) {
+  clearTimeout(tid.value)
+  tid.value = null
+}
+```
+
 ## Reference Map
 
 Start here to find the right authoritative file quickly:

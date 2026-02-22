@@ -32,6 +32,15 @@ some_adb_command 2>&1 | python3 /Users/chappie/.codex/skills/adb-permission-tria
    - `WRITE_SETTINGS`: Avoid `settings put` from `com.android.shell`. Use keyevents for volume or grant the permission to the target app package instead.
 4. Re-run the adb command with the fallback path.
 
+## Common Signatures
+
+Use these as quick pattern matches when logs are noisy:
+
+- `Permission Denial: starting Intent ... requires android.permission.CALL_PHONE`
+- `Error while accessing settings provider` + stack frames:
+  - `android.os.Parcel.readException`
+  - `android.database.DatabaseUtils.readExceptionFromParcel`
+
 ## Fallback Notes
 
 - `CALL_PHONE`:
