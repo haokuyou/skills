@@ -1,6 +1,6 @@
 ---
 name: macos-microphone-permission
-description: Resolve macOS microphone permission denials for apps or CLI tools. Use when logs include "Microphone permission denied" or audio capture fails due to macOS Privacy & Security microphone restrictions, and you need concrete steps to grant or reset access.
+description: Resolve macOS microphone permission denials for apps or CLI tools. Use when logs include "Microphone permission denied", when audio capture fails due to macOS Privacy & Security microphone restrictions, or when Info.plist errors mention missing NSMicrophoneUsageDescription.
 ---
 
 # macOS Microphone Permission
@@ -22,6 +22,8 @@ Restore microphone access on macOS for the failing app or CLI tool. This skill g
   - Open the Mic privacy pane and toggle access for the app or terminal.
   - Quit and relaunch the app or shell.
   - Retry the capture.
+- If logs mention `NSMicrophoneUsageDescription`:
+  - Add the key to the target app's Info.plist with a user-facing reason string, then rebuild and retry.
 - If the toggle is missing or won’t stay on:
   - Reset the microphone permission for that app with `tccutil`, then re-grant.
 

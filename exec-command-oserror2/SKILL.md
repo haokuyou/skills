@@ -1,6 +1,6 @@
 ---
 name: exec-command-oserror2
-description: Diagnose exec_command CreateProcess failures with "No such file or directory (os error 2)" by checking workdir existence, command paths, and executable permissions. Use when exec_command returns CreateProcess/Rejected errors or when a wrong workdir/relative script path is suspected.
+description: Diagnose exec_command CreateProcess failures with "No such file or directory (os error 2)" by checking workdir existence, command paths, and executable permissions. Use when exec_command returns CreateProcess/Rejected errors (Rejected("Failed to create unified exec process...")) or when a wrong workdir/relative script path is suspected.
 ---
 
 # Exec Command OSError 2

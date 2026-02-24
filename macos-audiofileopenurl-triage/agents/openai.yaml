@@ -1,0 +1,4 @@
+interface:
+  display_name: "AudioFileOpenURL Triage"
+  short_description: "Diagnose afinfo/AudioToolbox audio open failures on macOS"
+  default_prompt: "Help me diagnose \"Fail: AudioFileOpenURL failed\" when inspecting audio files on macOS."
