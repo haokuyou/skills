@@ -1,6 +1,6 @@
 ---
 name: exec-pty-session
-description: "Handle interactive exec_command sessions that require stdin by starting with tty=true and reusing session_id. Use when you plan to call write_stdin, run interactive tools, or hit \"write_stdin failed: stdin is closed\" errors."
+description: "Handle interactive exec_command sessions that require stdin by starting with tty=true and reusing session_id. Use when you plan to call write_stdin, run interactive tools, or hit \"write_stdin failed: stdin is closed for this session; rerun exec_command with tty=true to keep stdin open\" errors."
 ---
 
 # Exec Pty Session

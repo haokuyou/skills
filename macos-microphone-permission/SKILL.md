@@ -1,6 +1,6 @@
 ---
 name: macos-microphone-permission
-description: Resolve macOS microphone permission denials for apps or CLI tools. Use when logs include "Microphone permission denied", when audio capture fails due to macOS Privacy & Security microphone restrictions, or when Info.plist errors mention missing NSMicrophoneUsageDescription.
+description: "Resolve macOS microphone permission denials for apps or CLI tools. Use when logs include \"Microphone permission denied\", when audio capture fails due to macOS Privacy & Security microphone restrictions, or when Info.plist errors mention missing NSMicrophoneUsageDescription (including the NSMicrophoneUsageDescription key)."
 ---
 
 # macOS Microphone Permission
