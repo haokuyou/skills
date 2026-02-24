@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project Run Basic"
+  short_description: "Discover how to run a project locally using common entrypoints."
+  default_prompt: "Identify and run the project using common scripts or build tools."

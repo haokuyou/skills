@@ -45,6 +45,8 @@ Identify why AudioToolbox or afinfo cannot open an audio file and apply a minima
   - `bash /Users/chappie/.codex/skills/macos-audiofileopenurl-triage/scripts/check_audiofileopenurl.sh "/abs/path/file.wav"`
 - Multiple files (glob):
   - `bash /Users/chappie/.codex/skills/macos-audiofileopenurl-triage/scripts/check_audiofileopenurl.sh "/abs/path/*.wav"`
+- Batch triage (directory):
+  - `bash /Users/chappie/.codex/skills/macos-audiofileopenurl-triage/scripts/check_audiofileopenurl.sh "/abs/path/to/dir/*"`
 
 ## Notes
 

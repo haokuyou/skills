@@ -1,0 +1,4 @@
+interface:
+  display_name: "Version Bump Basic"
+  short_description: "Find and update version fields in common project files."
+  default_prompt: "Update project version numbers as requested using the workflow and scripts."
