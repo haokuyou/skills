@@ -1,0 +1,4 @@
+interface:
+  display_name: "Python Missing Module"
+  short_description: "Extract ModuleNotFoundError and guide pip/venv fixes."
+  default_prompt: "Parse Python tracebacks for ModuleNotFoundError and outline minimal dependency fixes."

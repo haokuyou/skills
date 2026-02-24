@@ -1,0 +1,4 @@
+interface:
+  display_name: "Exec Command OSError 2"
+  short_description: "Recover from exec_command OSError 2 path/workdir failures."
+  default_prompt: "Diagnose exec_command CreateProcess No such file or directory (os error 2) failures by verifying workdir and command paths, then run the checker script."

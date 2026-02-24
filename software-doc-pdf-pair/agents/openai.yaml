@@ -1,0 +1,4 @@
+interface:
+  display_name: "软著双PDF生成"
+  short_description: "收集软件信息并生成软著源码清单与设计说明书双PDF文档"
+  default_prompt: "Use $software-doc-pdf-pair to collect software name, company name, and software description, then generate the two software-copyright PDFs with fixed page counts."

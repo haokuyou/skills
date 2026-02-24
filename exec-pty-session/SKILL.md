@@ -9,6 +9,9 @@ description: "Handle interactive exec_command sessions that require stdin by sta
 
 Keep interactive exec_command runs alive with a TTY-backed session so write_stdin can feed input reliably.
 
+Trigger signature:
+- `write_stdin failed: stdin is closed for this session; rerun exec_command with tty=true to keep stdin open`
+
 ## Workflow
 
 1. Start the interactive command with exec_command and `tty=true`.

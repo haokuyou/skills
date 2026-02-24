@@ -1,6 +1,6 @@
 ---
 name: uni-app-autotest
-description: 使用 @dcloudio/hbuilderx-cli 与 HBuilderX uni-app 自动化测试插件，自动完成 uni-app x 测试用例编写、执行与失败修复，包含对特定组件（如 native-waterfall）在 Android/iOS 平台的测试编写与运行。适用于生成或更新 *.test.js、运行 web/weixin/android/ios-simulator/harmony 测试、分析 uniapp.test 日志与报告、持续修复失败用例等场景。
+description: 使用 @dcloudio/hbuilderx-cli 与 HBuilderX uni-app 自动化测试插件，自动完成 uni-app x 测试用例编写、执行与失败修复，包含对特定组件（如 native-waterfall）在 Android/iOS 平台的测试编写与运行，以及示例列数调整。适用于生成或更新 *.test.js、运行 web/weixin/android/ios-simulator/harmony 测试、分析 uniapp.test 日志与报告、持续修复失败用例等场景。
 ---
 
 # uni-app x 自动化测试流程
@@ -45,6 +45,15 @@ description: 使用 @dcloudio/hbuilderx-cli 与 HBuilderX uni-app 自动化测�
    - `pages/**/native-waterfall*.uvue`
    - `**/*native-waterfall*.test.js`
 3. 找到页面与用例后再执行 `preflight-autotest.sh` 与 `run-autotest.sh`，避免在未定位页面时盲跑。
+
+
+## native-waterfall 示例列数调整
+
+1. 先用只读扫描脚本锁定页面文件与测试文件（见上一节）。
+2. 打开目标 `*.uvue`，提取 `native-waterfall` 组件使用片段与 props 绑定。
+3. 仅在明确列数属性名与绑定位置时修改默认列数（例如用户明确要求为 4 列）。
+4. 若属性名不明确，先输出组件片段并请求用户提供文档或当前列数配置位置。
+5. 若列数影响测试断言，同步更新对应 `*.test.js` 断言。
 
 ## 用例生成规则
 
