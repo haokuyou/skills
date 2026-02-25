@@ -1,4 +1,4 @@
 interface:
   display_name: "PATH Update Warning Mitigation"
-  short_description: "Handle PATH update warnings in exec_command runs."
-  default_prompt: "Mitigate exec_command PATH update warnings by using absolute paths or inline PATH values."
+  short_description: "Handle PATH and timeout binary lookup failures."
+  default_prompt: "Mitigate exec_command PATH lookup failures (including missing timeout/gtimeout) using absolute paths, inline PATH, and watchdog fallback."

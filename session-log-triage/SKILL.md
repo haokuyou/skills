@@ -62,4 +62,5 @@ python3 /Users/chappie/.codex/skills/session-log-triage/scripts/triage_sessions.
 
 - The script prioritizes `function_call_output` / `custom_tool_call_output` so failures come from tool outputs instead of prompt boilerplate.
 - The script normalizes paths, timestamps, UUIDs, hex tokens, PIDs, and large numbers to improve clustering.
+- The script skips known noisy lines that look like failures but are usually benign environment chatter (for example Android emulator `FwdLockEngine` and uniapp pass summaries).
 - Keep excerpts short; avoid more than 25 lines per cluster in reports.

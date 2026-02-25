@@ -53,6 +53,19 @@ SKIP_REQUEST_PREFIXES = (
     "</path>",
     "---",
 )
+SKIP_REQUEST_CONTAINS = (
+    "After deciding to use a skill",
+    "How to use a skill (progressive disclosure)",
+    "Do not carry skills across turns unless re-mentioned",
+    "Use `multi_tool_use.parallel`",
+)
+BENIGN_FAILURE_PATTERNS = (
+    re.compile(r"FwdLockEngine::onInitialize.*failed:errno = 0", re.IGNORECASE),
+    re.compile(r"INFO\s*\|\s*Deleting .* failed", re.IGNORECASE),
+    re.compile(r"AiAiFed .*Cancelling training failed", re.IGNORECASE),
+    re.compile(r"AppOpService: Ignored setUidMode call for runtime permission app op", re.IGNORECASE),
+    re.compile(r"\[uniapp\.test\].*运行失败\s*0.*运行异常\s*0", re.IGNORECASE),
+)
 MAX_SAMPLE_LEN = 400
 
 
@@ -103,6 +116,13 @@ def is_failure_noise(segment: str) -> bool:
         return True
     if segment.startswith("echo ") and "RUN_STATUS=" in segment:
         return True
+    if segment.startswith("except Exception as "):
+        return True
+    if segment.startswith("- Reason:"):
+        return True
+    for pattern in BENIGN_FAILURE_PATTERNS:
+        if pattern.search(segment):
+            return True
     return False
 
 
@@ -155,6 +175,10 @@ def first_meaningful_request_line(text: str) -> Optional[str]:
         if line == "metadata:":
             continue
         if line.startswith("```"):
+            continue
+        if re.match(r"^\d+[.)]\s+", line):
+            continue
+        if any(token in line for token in SKIP_REQUEST_CONTAINS):
             continue
         if any(line.startswith(prefix) for prefix in SKIP_REQUEST_PREFIXES):
             continue
