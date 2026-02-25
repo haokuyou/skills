@@ -15,6 +15,7 @@ Keep command discovery stable even when PATH updates are blocked.
 2. If a script warns `timeout/gtimeout not found`, detect available timeout implementation and switch to watchdog fallback when none exists.
 3. Re-run commands using absolute paths, or set PATH inline for the command only.
 4. Avoid relying on shell init files for PATH changes in exec_command runs.
+5. If `timeout/gtimeout not found` repeats in the same task, stop re-running the same command and pin one timeout strategy (`timeout`, `gtimeout`, or watchdog) before retrying.
 
 ## Script: resolve binaries
 

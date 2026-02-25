@@ -19,6 +19,7 @@ Trigger signature:
 3. Use write_stdin with that `session_id` for all subsequent input.
 4. If you see `stdin is closed` or `Unknown process id`, restart the command with `tty=true` and retry.
 5. Prefer launching REPLs or long-running CLIs (ssh, python, node, npm, pip) with `tty=true` if you might need stdin later.
+6. If the session log repeatedly shows `write_stdin failed: stdin is closed`, treat it as a workflow bug and always start the first exec_command with `tty=true`.
 
 ## Recovery checklist
 

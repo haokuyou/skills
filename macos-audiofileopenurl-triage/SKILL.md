@@ -31,6 +31,7 @@ Identify why AudioToolbox or afinfo cannot open an audio file and apply a minima
 5. If afinfo still fails
    - Re-export the audio from the source app.
    - Convert using `ffmpeg` if available (`ffmpeg -i in -c:a pcm_s16le out.wav`).
+6. If session logs repeat `Fail: AudioFileOpenURL failed`, stop blind retries and run `check_audiofileopenurl.sh` once to collect deterministic evidence.
 
 ## Decision checklist
 

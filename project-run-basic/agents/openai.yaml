@@ -1,4 +1,4 @@
 interface:
   display_name: "Project Run Basic"
-  short_description: "Discover how to run a project locally using common entrypoints."
-  default_prompt: "Identify and run the project using common scripts or build tools."
+  short_description: "Discover how to run a project locally from common English/Chinese run requests."
+  default_prompt: "Identify and run the project from requests like run this project or 运行项目."

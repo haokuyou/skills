@@ -85,7 +85,7 @@ description: 使用 @dcloudio/hbuilderx-cli 与 HBuilderX uni-app 自动化测�
 12. 默认启用 `AUTOTEST_AUTO_RESTORE=1`，自动恢复被测试器改写的 `env.js` 与 `jest.config.js`。
 13. Apple Silicon + x86_64-only iOS launcher 场景下，仅当 HBuilderX CLI 本身支持 x86_64 时才加 Rosetta (`arch -x86_64`)；若 CLI 为 arm64-only，则保持原生执行并给出告警。
 14. `run-autotest.sh` 若出现“命令退出 0 但无新 JSON 报告”，必须按 `BLOCKED` 处理并执行回退检查，不得视为通过。
-15. 若系统缺少 `timeout/gtimeout`，`run-autotest.sh` 必须启用内置 watchdog 超时，避免长时间静默挂起。
+15. 若系统缺少 `timeout/gtimeout`，先按 `$path-update-warning` 固定 timeout 策略，再由 `run-autotest.sh` 启用内置 watchdog 超时，避免长时间静默挂起与重复告警。
 
 ## 命令策略与边界
 

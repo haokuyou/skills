@@ -1,6 +1,6 @@
 ---
 name: project-run-basic
-description: Identify how to run a project locally using common entrypoints (package.json scripts, Makefile targets, poetry, go.mod, docker compose). Use when a user asks to run the project, start dev server, or says "run this project".
+description: Identify how to run a project locally using common entrypoints (package.json scripts, Makefile targets, poetry, go.mod, docker compose). Use when a user asks to run the project, start dev server, says "run this project", or uses equivalent Chinese requests like "运行项目"/"运行本项目".
 ---
 
 # Project Run Basic
