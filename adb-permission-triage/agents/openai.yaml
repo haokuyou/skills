@@ -1,4 +1,4 @@
 interface:
   display_name: "ADB Permission Triage"
-  short_description: "ADB SecurityException triage and permission fallbacks"
+  short_description: "排查 ADB SecurityException 并提供权限回退方案"
   default_prompt: "Triage adb Permission Denial/SecurityException output, extract permission names, and suggest safe fallbacks."

@@ -1,4 +1,4 @@
 interface:
   display_name: "Session Log Triage"
-  short_description: "Cluster repeated failures and recurring user asks from session logs."
+  short_description: "从会话日志中聚类重复失败与高频用户请求。"
   default_prompt: "Scan recent session logs, normalize tool-failure lines, cluster top repeated issues, and include repeated user request patterns with excerpts."

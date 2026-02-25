@@ -1,4 +1,4 @@
 interface:
   display_name: "Git Default Repo"
-  short_description: "Report the default remote repo and default branch for a project."
+  short_description: "报告项目的默认远程仓库与默认分支。"
   default_prompt: "Find the default git remote and default branch for this project."

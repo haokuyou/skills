@@ -1,4 +1,4 @@
 interface:
   display_name: "Exec Command OSError 2"
-  short_description: "Recover from exec_command OSError 2 path/workdir failures."
+  short_description: "恢复 exec_command OSError 2 的路径/工作目录失败问题。"
   default_prompt: "Diagnose exec_command CreateProcess No such file or directory (os error 2) failures by verifying workdir and command paths, then run the checker script."

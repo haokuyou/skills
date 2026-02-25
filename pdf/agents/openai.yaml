@@ -1,5 +1,5 @@
 interface:
   display_name: "PDF Skill"
-  short_description: "Create, edit, and review PDFs"
+  short_description: "创建、编辑和审阅 PDF"
   icon_large: "./assets/pdf.png"
   default_prompt: "Create, edit, or review this PDF and summarize the key output or changes."

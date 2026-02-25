@@ -1,4 +1,4 @@
 interface:
   display_name: "Project Doc Sync"
-  short_description: "Read and maintain root README.md and log.md during coding work."
+  short_description: "在编码过程中读取并维护根目录 README.md 与 log.md。"
   default_prompt: "Read root README.md and log.md before coding; after each project change, update both docs and keep code as source of truth."

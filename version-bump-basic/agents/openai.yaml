@@ -1,4 +1,4 @@
 interface:
   display_name: "Version Bump Basic"
-  short_description: "Find and update version fields in common project files."
+  short_description: "在常见项目文件中查找并更新版本字段。"
   default_prompt: "Update project version numbers as requested using the workflow and scripts."

@@ -1,3 +1,3 @@
 interface:
   display_name: "uni-app x UTS"
-  short_description: "UTS (uni type script) syntax, rules, and cross-platform constraints for uni-app x"
+  short_description: "面向 uni-app x 的 UTS（uni type script）语法、规则与跨平台约束"

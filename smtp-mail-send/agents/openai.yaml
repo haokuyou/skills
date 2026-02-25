@@ -1,4 +1,4 @@
 interface:
   display_name: "SMTP Mail Send"
-  short_description: "Send email via SMTP with env-based credentials."
+  short_description: "使用环境变量中的凭据通过 SMTP 发送邮件。"
   default_prompt: "Send an email via SMTP using environment-provided credentials; support to/cc/bcc, subject, body, and optional attachments."
