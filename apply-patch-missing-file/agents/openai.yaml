@@ -1,0 +1,4 @@
+interface:
+  display_name: "Apply Patch Missing File"
+  short_description: "排查 apply_patch 因文件不存在导致的校验失败。"
+  default_prompt: "Diagnose apply_patch verification failed errors caused by missing target files (os error 2), then provide deterministic path/workdir fixes."
