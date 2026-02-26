@@ -12,7 +12,9 @@ PROJECT_DIR="${2:-$(pwd)}"
 CASE_FILE="${3:-}"
 DEVICE_ID="${4:-}"
 HX_APP_PATH="${HBUILDERX_APP_PATH:-/Applications/HBuilderX.app}"
+ANDROID_ADB_PATH="${ANDROID_ADB_PATH:-}"
 LSOF_BIN=""
+ADB_BIN_FOR_RERUN=""
 
 if command -v lsof >/dev/null 2>&1; then
   LSOF_BIN="lsof"
@@ -90,13 +92,18 @@ if [[ "$PLATFORM" == "android" ]]; then
   AUTOTEST_ANDROID_PORT="${AUTOTEST_ANDROID_PORT:-9520}"
   AUTOTEST_ANDROID_RUNTIME_PORT=9520
   ADB_BIN=""
-  if command -v adb >/dev/null 2>&1; then
+  if [[ -n "$ANDROID_ADB_PATH" && -x "$ANDROID_ADB_PATH" ]]; then
+    ADB_BIN="$ANDROID_ADB_PATH"
+  elif command -v adb >/dev/null 2>&1; then
     ADB_BIN="adb"
   elif [[ -x "$HOME/Library/Android/sdk/platform-tools/adb" ]]; then
     ADB_BIN="$HOME/Library/Android/sdk/platform-tools/adb"
   fi
 
   if [[ -n "$ADB_BIN" ]]; then
+    if [[ "$ADB_BIN" != "adb" ]]; then
+      ADB_BIN_FOR_RERUN="$ADB_BIN"
+    fi
     DEV_COUNT="$("$ADB_BIN" devices | rg -c '\tdevice$' || true)"
     echo "CHECK: adb device count=$DEV_COUNT"
     if [[ -n "$DEVICE_ID" ]]; then
@@ -154,7 +161,11 @@ if [[ -n "$CASE_FILE" ]]; then
   fi
 fi
 
-RERUN_CMD=("$HOME/.codex/skills/uni-app-autotest/scripts/run-autotest.sh" "$PLATFORM")
+RERUN_CMD=()
+if [[ "$PLATFORM" == "android" && -n "$ADB_BIN_FOR_RERUN" ]]; then
+  RERUN_CMD+=(env "ANDROID_ADB_PATH=$ADB_BIN_FOR_RERUN")
+fi
+RERUN_CMD+=("$HOME/.codex/skills/uni-app-autotest/scripts/run-autotest.sh" "$PLATFORM")
 if [[ -n "$CASE_FILE" ]]; then
   RERUN_CMD+=("$CASE_FILE")
 fi
@@ -165,4 +176,10 @@ fi
 
 echo "RERUN_CMD:"
 printf "  %q" "${RERUN_CMD[@]}"
+printf "\n"
+echo "RERUN_CMD_PLAIN:"
+printf "  "
+for arg in "${RERUN_CMD[@]}"; do
+  printf "\"%s\" " "$arg"
+done
 printf "\n"

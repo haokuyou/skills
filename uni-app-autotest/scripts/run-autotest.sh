@@ -13,6 +13,9 @@ AUTOTEST_MAX_RETRIES="${AUTOTEST_MAX_RETRIES:-1}"
 AUTOTEST_LOG_FILE="${AUTOTEST_LOG_FILE:-}"
 AUTOTEST_AUTO_RESTORE="${AUTOTEST_AUTO_RESTORE:-1}"
 AUTOTEST_STRATEGY="${AUTOTEST_STRATEGY:-auto}"
+AUTOTEST_ANDROID_AUTO_SELECT_DEVICE="${AUTOTEST_ANDROID_AUTO_SELECT_DEVICE:-1}"
+AUTOTEST_IOS_ACTIVATE_SIMULATOR="${AUTOTEST_IOS_ACTIVATE_SIMULATOR:-1}"
+AUTOTEST_IOS_FOREGROUND_ON_COMPLETE="${AUTOTEST_IOS_FOREGROUND_ON_COMPLETE:-1}"
 
 TIMEOUT_BIN=""
 TIMEOUT_FALLBACK_NOTICE_SHOWN="false"
@@ -242,6 +245,68 @@ get_binary_arches() {
   echo "$arches"
 }
 
+is_truthy() {
+  local value="${1:-}"
+  case "$value" in
+    1|true|TRUE|yes|YES|on|ON) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+get_first_available_ios_simulator_udid() {
+  if ! command -v xcrun >/dev/null 2>&1; then
+    echo ""
+    return 0
+  fi
+
+  xcrun simctl list devices available 2>/dev/null | rg -m 1 -o '[0-9A-Fa-f-]{36}' || true
+}
+
+foreground_ios_simulator() {
+  if [[ "$(uname -s)" != "Darwin" ]]; then
+    return 0
+  fi
+  if ! command -v osascript >/dev/null 2>&1; then
+    return 0
+  fi
+
+  osascript -e 'tell application "Simulator" to activate' >/dev/null 2>&1 || true
+  echo "INFO: iOS Simulator brought to foreground."
+}
+
+activate_ios_simulator() {
+  local target_udid="${1:-}"
+
+  if [[ "$PLATFORM" != "ios" ]]; then
+    return 0
+  fi
+  if ! is_truthy "$AUTOTEST_IOS_ACTIVATE_SIMULATOR"; then
+    return 0
+  fi
+  if [[ "$(uname -s)" != "Darwin" ]]; then
+    return 0
+  fi
+  if ! command -v open >/dev/null 2>&1; then
+    return 0
+  fi
+
+  if [[ -z "$target_udid" ]]; then
+    target_udid="$(get_first_available_ios_simulator_udid)"
+  fi
+
+  if [[ -n "$target_udid" ]] && command -v xcrun >/dev/null 2>&1; then
+    xcrun simctl boot "$target_udid" >/dev/null 2>&1 || true
+    open -a Simulator --args -CurrentDeviceUDID "$target_udid" >/dev/null 2>&1 || open -a Simulator >/dev/null 2>&1 || true
+    xcrun simctl bootstatus "$target_udid" -b >/dev/null 2>&1 || true
+    echo "INFO: iOS Simulator prepared (udid=${target_udid})."
+  else
+    open -a Simulator >/dev/null 2>&1 || true
+    echo "INFO: iOS Simulator app launched."
+  fi
+
+  foreground_ios_simulator
+}
+
 if [[ -z "$PLATFORM" ]]; then
   echo "usage: run-autotest.sh <web|weixin|android|ios|ios-simulator|harmony|aliases> [case-file] [project-dir] [device-id]"
   exit 1
@@ -329,6 +394,7 @@ fi
 
 PREFLIGHT_RC=0
 PREFLIGHT_ROSETTA_REQUIRED="false"
+PREFLIGHT_SUGGESTED_DEVICE_ID=""
 if [[ -x "${SCRIPT_DIR}/preflight-autotest.sh" ]]; then
   set +e
   PREFLIGHT_OUTPUT="$("${SCRIPT_DIR}/preflight-autotest.sh" "$PLATFORM" "$PROJECT_DIR" "$DEVICE_ID" 2>&1)"
@@ -338,6 +404,7 @@ if [[ -x "${SCRIPT_DIR}/preflight-autotest.sh" ]]; then
   if printf "%s\n" "$PREFLIGHT_OUTPUT" | rg -q '^ROSETTA_REQUIRED=true$'; then
     PREFLIGHT_ROSETTA_REQUIRED="true"
   fi
+  PREFLIGHT_SUGGESTED_DEVICE_ID="$(printf "%s\n" "$PREFLIGHT_OUTPUT" | sed -n 's/^SUGGESTED_DEVICE_ID=//p' | tail -n 1)"
 fi
 
 if [[ "$PREFLIGHT_RC" -ne 0 ]]; then
@@ -349,8 +416,22 @@ if [[ "$PREFLIGHT_RC" -ne 0 ]]; then
   exit "$PREFLIGHT_RC"
 fi
 
+if [[ "$PLATFORM" == "android" && -z "$DEVICE_ID" && -n "$PREFLIGHT_SUGGESTED_DEVICE_ID" ]]; then
+  if [[ "$AUTOTEST_ANDROID_AUTO_SELECT_DEVICE" == "1" || "$AUTOTEST_ANDROID_AUTO_SELECT_DEVICE" == "true" ]]; then
+    DEVICE_ID="$PREFLIGHT_SUGGESTED_DEVICE_ID"
+    echo "INFO: auto-selected Android device_id=${DEVICE_ID}"
+  else
+    echo "INFO: suggested Android device_id=${PREFLIGHT_SUGGESTED_DEVICE_ID}"
+  fi
+fi
+
 echo "RUN_STATUS=READY"
 echo "CODE_EDIT_ALLOWED=true"
+
+if [[ "$PLATFORM" == "ios" ]]; then
+  activate_ios_simulator "$DEVICE_ID"
+  echo "INFO: iOS build can take minutes on large projects because uniapp.test compiles the full app."
+fi
 
 SCRIPT_NAME="test:uniappx:${PLATFORM}"
 HAS_SCRIPT="false"
@@ -459,6 +540,10 @@ set +e
 run_with_retries "${CMD[@]}"
 EXEC_RC=$?
 set -e
+
+if [[ "$PLATFORM" == "ios" ]] && is_truthy "$AUTOTEST_IOS_FOREGROUND_ON_COMPLETE"; then
+  foreground_ios_simulator
+fi
 
 if [[ "$EXEC_RC" -ne 0 ]]; then
   if [[ -x "${SCRIPT_DIR}/fallback-autotest.sh" ]]; then

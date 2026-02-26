@@ -86,6 +86,11 @@ description: 使用 @dcloudio/hbuilderx-cli 与 HBuilderX uni-app 自动化测�
 13. Apple Silicon + x86_64-only iOS launcher 场景下，仅当 HBuilderX CLI 本身支持 x86_64 时才加 Rosetta (`arch -x86_64`)；若 CLI 为 arm64-only，则保持原生执行并给出告警。
 14. `run-autotest.sh` 若出现“命令退出 0 但无新 JSON 报告”，必须按 `BLOCKED` 处理并执行回退检查，不得视为通过。
 15. 若系统缺少 `timeout/gtimeout`，先按 `$path-update-warning` 固定 timeout 策略，再由 `run-autotest.sh` 启用内置 watchdog 超时，避免长时间静默挂起与重复告警。
+16. Android 多设备且未显式传 `device-id` 时，`preflight-autotest.sh` 会输出 `SUGGESTED_DEVICE_ID`；`run-autotest.sh` 默认自动采用（`AUTOTEST_ANDROID_AUTO_SELECT_DEVICE=1`）以避免目标设备歧义。
+17. 需要关闭上述自动选设备行为时，设置 `AUTOTEST_ANDROID_AUTO_SELECT_DEVICE=0` 并手工传入 `device-id`。
+18. 用户诉求包含“在 iOS 模拟器上打开项目再测试”时，执行前必须主动拉起并前台激活 Simulator，再开始 `run-autotest.sh`，避免“测试已跑但用户未看到模拟器”。
+19. iOS 测试开始前必须明确提示“uniapp.test 会先编译全量工程（大项目可能 2-6 分钟）”，将编译耗时与业务断言耗时分开说明。
+20. iOS 测试结束后（无论通过或失败）需再次激活 Simulator 到前台，便于用户立即看到当前 App 状态。
 
 ## 命令策略与边界
 
@@ -128,6 +133,7 @@ description: 使用 @dcloudio/hbuilderx-cli 与 HBuilderX uni-app 自动化测�
 12. Android 若出现 `Port 9520 is in use`（或 `AUTOTEST_ANDROID_PORT` 对应端口冲突），先释放端口再重跑，不做代码改动。
 13. iOS 若出现 `Port 9520 is in use`（或 `AUTOTEST_IOS_PORT` 对应端口冲突），先释放端口再重跑，不做代码改动。
 14. `CODE_EDIT_ALLOWED=false` 或 `RUN_STATUS=BLOCKED` 后，禁止手工编辑项目文件（包括 `jest.config.js`、`env.js`）；仅允许只读诊断与回退输出。
+15. 若出现 `BLOCKER: adb is unavailable...` 但回退检查显示 `adb device count>0`，优先判定为设备选择或 `PATH` 歧义；使用 `ANDROID_ADB_PATH` + 显式 `device-id` 重跑。
 
 ## 资源映射
 
@@ -149,3 +155,4 @@ description: 使用 @dcloudio/hbuilderx-cli 与 HBuilderX uni-app 自动化测�
 2. 返回新增/修改的测试文件路径。
 3. 返回按平台统计的通过/失败结果。
 4. 若被阻塞，返回精确阻塞原因与下一条人工命令。
+5. 对 iOS 任务，补充“模拟器是否已前台显示、当前设备 UDID（若可得）”。

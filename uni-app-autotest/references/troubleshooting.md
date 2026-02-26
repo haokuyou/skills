@@ -68,6 +68,35 @@ open -a HBuilderX
 3. 确保 HBuilderX 主进程已启动且与设备可通信。
 4. 使用 skill 主入口重跑，避免切换多套 CLI。
 
+## Android 多设备目标歧义（真机与模拟器同时在线）
+
+现象示例：
+- 未传 `device-id` 时命中真机而非模拟器。
+- 同一命令在不同轮次命中设备不一致。
+
+处理建议：
+
+1. 明确传入 `device-id`（例如 `emulator-5554`）。
+2. 若未传 `device-id`，`preflight-autotest.sh` 会输出 `SUGGESTED_DEVICE_ID=...`，`run-autotest.sh` 默认自动采用。
+3. 若不希望自动选择，设置 `AUTOTEST_ANDROID_AUTO_SELECT_DEVICE=0` 并显式传参。
+
+## Android 预检误报 adb unavailable（多设备/路径歧义）
+
+现象示例：
+- 预检报 `BLOCKER: adb is unavailable or no device/emulator is attached.`
+- 回退检查却显示 `adb device count > 0`。
+
+处理建议：
+
+1. 优先固定 adb 路径：`ANDROID_ADB_PATH=$HOME/Library/Android/sdk/platform-tools/adb`。
+2. 显式传入在线设备 ID 重跑（建议模拟器 ID）。
+3. 用以下命令交叉确认：
+
+```bash
+$HOME/Library/Android/sdk/platform-tools/adb devices -l
+$HOME/Library/Android/sdk/platform-tools/adb -s <device-id> get-state
+```
+
 ## Android 端口冲突（9520 默认端口）
 
 现象示例：
@@ -210,4 +239,3 @@ python3 $HOME/.codex/skills/uni-app-autotest/scripts/extract-uniapp-failures.py 
 
 1. 这是系统审计噪音，通常不影响测试逻辑。
 2. 若无崩溃/断言失败，可忽略该行并继续分析真实失败块。
-

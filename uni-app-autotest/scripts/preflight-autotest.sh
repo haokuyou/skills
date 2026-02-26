@@ -98,6 +98,9 @@ if [[ "$PLATFORM" == "android" ]]; then
   AUTOTEST_ANDROID_PORT="${AUTOTEST_ANDROID_PORT:-9520}"
   AUTOTEST_ANDROID_RUNTIME_PORT=9520
   ADB_BIN=""
+  ONLINE_DEVICE_IDS=""
+  ONLINE_EMULATOR_IDS=""
+  SUGGESTED_DEVICE_ID=""
   if [[ -n "$ANDROID_ADB_PATH" && -x "$ANDROID_ADB_PATH" ]]; then
     ADB_BIN="$ANDROID_ADB_PATH"
   elif command -v adb >/dev/null 2>&1; then
@@ -111,23 +114,41 @@ if [[ "$PLATFORM" == "android" ]]; then
     exit 3
   fi
 
-  if ! "$ADB_BIN" get-state >/dev/null 2>&1; then
+  ADB_DEVICES_OUTPUT="$("$ADB_BIN" devices 2>/dev/null || true)"
+  if [[ -z "$ADB_DEVICES_OUTPUT" ]]; then
     echo "BLOCKER: adb is unavailable or no device/emulator is attached."
     echo "NEXT: start an Android emulator or connect a device, then rerun."
     exit 3
   fi
 
-  DEVICE_COUNT="$("$ADB_BIN" devices | rg -c '\tdevice$' || true)"
+  DEVICE_COUNT="$(printf "%s\n" "$ADB_DEVICES_OUTPUT" | rg -c '\tdevice$' || true)"
   if [[ -z "$DEVICE_COUNT" || "$DEVICE_COUNT" -lt 1 ]]; then
     echo "BLOCKER: no Android device in device state."
     exit 3
   fi
 
+  ONLINE_DEVICE_IDS="$(printf "%s\n" "$ADB_DEVICES_OUTPUT" | tail -n +2 | awk '$2=="device"{print $1}' || true)"
+  ONLINE_EMULATOR_IDS="$(printf "%s\n" "$ONLINE_DEVICE_IDS" | rg '^emulator-' || true)"
+
   if [[ -n "$DEVICE_ID" ]]; then
-    if ! "$ADB_BIN" devices | tail -n +2 | cut -f1 | grep -Fxq "$DEVICE_ID"; then
+    if ! printf "%s\n" "$ONLINE_DEVICE_IDS" | grep -Fxq "$DEVICE_ID"; then
       echo "BLOCKER: specified Android device_id not found: $DEVICE_ID"
       echo "NEXT: run adb devices -l and choose an online device id."
       exit 3
+    fi
+    if ! "$ADB_BIN" -s "$DEVICE_ID" get-state >/dev/null 2>&1; then
+      echo "BLOCKER: specified Android device_id is not ready: $DEVICE_ID"
+      echo "NEXT: run adb -s $DEVICE_ID get-state and ensure it is 'device'."
+      exit 3
+    fi
+  elif [[ "$DEVICE_COUNT" -gt 1 ]]; then
+    SUGGESTED_DEVICE_ID="$(printf "%s\n" "$ONLINE_EMULATOR_IDS" | head -n 1 || true)"
+    if [[ -z "$SUGGESTED_DEVICE_ID" ]]; then
+      SUGGESTED_DEVICE_ID="$(printf "%s\n" "$ONLINE_DEVICE_IDS" | head -n 1 || true)"
+    fi
+    if [[ -n "$SUGGESTED_DEVICE_ID" ]]; then
+      echo "WARN: multiple Android devices detected; pin device_id to avoid ambiguous target."
+      echo "SUGGESTED_DEVICE_ID=$SUGGESTED_DEVICE_ID"
     fi
   fi
 
