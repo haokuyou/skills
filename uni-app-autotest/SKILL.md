@@ -134,6 +134,7 @@ description: 使用 @dcloudio/hbuilderx-cli 与 HBuilderX uni-app 自动化测�
 13. iOS 若出现 `Port 9520 is in use`（或 `AUTOTEST_IOS_PORT` 对应端口冲突），先释放端口再重跑，不做代码改动。
 14. `CODE_EDIT_ALLOWED=false` 或 `RUN_STATUS=BLOCKED` 后，禁止手工编辑项目文件（包括 `jest.config.js`、`env.js`）；仅允许只读诊断与回退输出。
 15. 若出现 `BLOCKER: adb is unavailable...` 但回退检查显示 `adb device count>0`，优先判定为设备选择或 `PATH` 歧义；使用 `ANDROID_ADB_PATH` + 显式 `device-id` 重跑。
+16. 若连续出现 `FALLBACK: preflight blocked, running non-invasive checks.`，视为同一环境阻塞已确认；在输入条件未变化前不要重复跑预检。
 
 ## 资源映射
 

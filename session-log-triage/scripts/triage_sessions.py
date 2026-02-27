@@ -65,6 +65,9 @@ BENIGN_FAILURE_PATTERNS = (
     re.compile(r"AiAiFed .*Cancelling training failed", re.IGNORECASE),
     re.compile(r"AppOpService: Ignored setUidMode call for runtime permission app op", re.IGNORECASE),
     re.compile(r"\[uniapp\.test\].*运行失败\s*0.*运行异常\s*0", re.IGNORECASE),
+    re.compile(r"^WARN: timeout/gtimeout not found; using built-in watchdog timeout\.$", re.IGNORECASE),
+    re.compile(r"^RUN_STATUS=BLOCKED$", re.IGNORECASE),
+    re.compile(r'^rm -f "\$timeout_mark_file"$'),
 )
 MAX_SAMPLE_LEN = 400
 
@@ -109,6 +112,16 @@ def is_failure_noise(segment: str) -> bool:
     if segment.startswith("```"):
         return True
     if segment.startswith("gAAAAA"):
+        return True
+    if segment.startswith("<") and segment.endswith(">"):
+        return True
+    if segment.startswith("#"):
+        return True
+    if segment.startswith("- "):
+        return True
+    if re.match(r"^\d+[.)]\s+", segment):
+        return True
+    if segment.startswith("Traceback (most recent call last):"):
         return True
     if "setTimeout(" in segment:
         return True
@@ -202,7 +215,7 @@ def extract_failure_segments(obj: Dict[str, Any], exclude_types: List[str]) -> L
 
     if entry_type == "event_msg":
         payload_type = payload.get("type")
-        if payload_type == "token_count":
+        if payload_type in ("token_count", "agent_message", "agent_reasoning"):
             return []
         for key in ("error", "message", "text"):
             text = payload.get(key)

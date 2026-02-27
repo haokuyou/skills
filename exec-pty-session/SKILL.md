@@ -21,6 +21,7 @@ Trigger signature:
 5. Prefer launching REPLs or long-running CLIs (ssh, python, node, npm, pip) with `tty=true` if you might need stdin later.
 6. If the session log repeatedly shows `write_stdin failed: stdin is closed`, treat it as a workflow bug and always start the first exec_command with `tty=true`.
 7. Avoid starting with commands that exit immediately (e.g., `pwd`, `echo`) when you plan to call write_stdin.
+8. If you know you will call `write_stdin` even once, do not "probe" with a non-TTY exec first; open the persistent TTY session as the first command.
 
 ## Recovery checklist
 

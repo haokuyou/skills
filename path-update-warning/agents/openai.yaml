@@ -1,4 +1,4 @@
 interface:
   display_name: "PATH Update Warning Mitigation"
-  short_description: "处理 PATH 与 timeout 可执行文件查找失败问题。"
-  default_prompt: "Mitigate exec_command PATH lookup failures (including missing timeout/gtimeout) using absolute paths, inline PATH, and watchdog fallback."
+  short_description: "处理 PATH 与 timeout 可执行文件查找失败，并识别 watchdog 回退提示。"
+  default_prompt: "Mitigate exec_command PATH lookup failures (including missing timeout/gtimeout) using absolute paths, inline PATH, and watchdog fallback without over-triaging non-fatal warnings."

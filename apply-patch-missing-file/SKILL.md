@@ -32,6 +32,7 @@ Trigger signatures:
 4. If relative path was intended, ensure `apply_patch` path is relative to the actual repository root.
 5. Verify `workdir` matches the repository where the file exists.
 6. Retry patch only after `test -f` confirms the target file exists.
+7. If the same missing-file signature repeats for multiple files in one task, stop retrying patches and re-confirm the repository root once before any further `apply_patch`.
 
 ## Decision rules
 
@@ -39,6 +40,7 @@ Trigger signatures:
 - Use `*** Update File:` only for existing files.
 - Do not guess unknown paths; locate exact file first.
 - Prefer absolute workspace validation (`pwd`, `ls`) before patch retry.
+- Repeated `os error 2` lines in the same task usually mean path context is wrong, not that each file separately disappeared.
 
 ## Example
 
