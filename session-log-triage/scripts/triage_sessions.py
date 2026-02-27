@@ -67,6 +67,7 @@ BENIGN_FAILURE_PATTERNS = (
     re.compile(r"\[uniapp\.test\].*运行失败\s*0.*运行异常\s*0", re.IGNORECASE),
     re.compile(r"^WARN: timeout/gtimeout not found; using built-in watchdog timeout\.$", re.IGNORECASE),
     re.compile(r"^RUN_STATUS=BLOCKED$", re.IGNORECASE),
+    re.compile(r"^FALLBACK: preflight blocked, running non-invasive checks\.$", re.IGNORECASE),
     re.compile(r'^rm -f "\$timeout_mark_file"$'),
 )
 MAX_SAMPLE_LEN = 400
