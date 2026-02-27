@@ -1,4 +1,4 @@
 interface:
   display_name: "Version Bump Basic"
-  short_description: "在常见项目文件中查找并更新版本字段。"
-  default_prompt: "Update project version numbers as requested using the workflow and scripts."
+  short_description: "处理“将版本改成3”等请求，查找并更新版本字段。"
+  default_prompt: "Handle version bump requests such as change version to X or 将版本改成3, then update the relevant project version fields."

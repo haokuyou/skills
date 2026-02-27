@@ -1,6 +1,6 @@
 ---
 name: project-run-basic
-description: Identify how to run a project locally using common entrypoints (package.json scripts, Makefile targets, poetry, go.mod, docker compose). Use when a user asks to run the project, start dev server, says "run this project", or uses equivalent Chinese requests like "运行项目"/"运行本项目".
+description: Identify how to run a project locally using common entrypoints (package.json scripts, Makefile targets, poetry, go.mod, docker compose). Use when a user asks to run the project, start dev server, says "run this project", or uses equivalent Chinese requests like "运行项目"/"运行本项目". Keep this skill for generic local start requests; if the user explicitly asks for simulator/device test execution, route to the platform-specific test skill instead.
 ---
 
 # Project Run Basic
@@ -31,3 +31,4 @@ Detect likely run commands from common project files, then run the most appropri
 ## Notes
 
 - If no hints appear, read README.md or project docs for explicit steps.
+- If the request includes device or simulator wording (for example "安卓模拟器", "iOS 模拟器", or component-specific test runs), do not stop at a generic start command; hand off to the relevant test skill such as `uni-app-autotest`.

@@ -1,6 +1,6 @@
 ---
 name: uni-app-autotest
-description: 使用 @dcloudio/hbuilderx-cli 与 HBuilderX uni-app 自动化测试插件，自动完成 uni-app x 测试用例编写、执行与失败修复，包含对特定组件（如 native-waterfall）在 Android/iOS 平台的测试编写与运行，以及示例列数调整。适用于生成或更新 *.test.js、运行 web/weixin/android/ios-simulator/harmony 测试、分析 uniapp.test 日志与报告、持续修复失败用例等场景。
+description: 使用 @dcloudio/hbuilderx-cli 与 HBuilderX uni-app 自动化测试插件，自动完成 uni-app x 测试用例编写、执行与失败修复，包含对特定组件（如 native-waterfall）在 Android/iOS 平台的测试编写与运行，以及示例列数调整。适用于生成或更新 *.test.js、运行 web/weixin/android/ios-simulator/harmony 测试、分析 uniapp.test 日志与报告、持续修复失败用例等场景；当用户提出“运行项目到安卓模拟器测试一下 native-waterfall”这类请求时也应触发。
 ---
 
 # uni-app x 自动化测试流程
@@ -38,6 +38,7 @@ description: 使用 @dcloudio/hbuilderx-cli 与 HBuilderX uni-app 自动化测�
 
 ## native-waterfall 快速定位（Android/iOS）
 
+1. 若用户直接说“运行项目到安卓模拟器测试一下 native-waterfall”，立即将目标归一化为：平台=`android`，目标组件=`native-waterfall`，随后进入本节流程。
 1. 先运行只读扫描脚本定位页面与测试文件：
    - `$HOME/.codex/skills/uni-app-autotest/scripts/find-native-waterfall.sh <project-dir>`
 2. 优先锁定以下路径中的页面与用例：

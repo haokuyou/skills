@@ -1,6 +1,6 @@
 ---
 name: version-bump-basic
-description: Update version numbers across common project files (package.json, pyproject.toml, Cargo.toml, build.gradle, gradle.properties, Info.plist, VERSION). Use when a user asks to bump/set version, align app/build versions, says "change version to X", or uses equivalent Chinese requests such as "版本改成X"/"将版本改成X".
+description: Update version numbers across common project files (package.json, pyproject.toml, Cargo.toml, build.gradle, gradle.properties, Info.plist, VERSION). Use when a user asks to bump/set version, align app/build versions, says "change version to X", or uses equivalent Chinese requests such as "版本改成X"/"将版本改成X", including direct numeric requests like "将版本改成3".
 ---
 
 # Version Bump Basic
@@ -18,6 +18,7 @@ Locate version fields in common project files, update to the requested version, 
 
 1. Confirm the target version and scope
    - Ask whether the request is about app version, build number, or both when unclear.
+   - Single-number requests like `将版本改成3` are ambiguous; confirm whether the user means semantic version `3`, build number `3`, or both unless the project clearly exposes only one version field family.
 2. Find version fields
    - Run the scanner script and record the files/lines it reports.
 3. Update version fields

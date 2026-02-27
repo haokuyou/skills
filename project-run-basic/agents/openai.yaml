@@ -1,4 +1,4 @@
 interface:
   display_name: "Project Run Basic"
-  short_description: "根据常见中英文运行请求，识别项目的本地启动方式。"
-  default_prompt: "Identify and run the project from requests like run this project or 运行项目."
+  short_description: "处理通用“运行项目”请求，识别项目的本地启动方式。"
+  default_prompt: "Handle generic requests like run this project, 运行项目, or 运行本项目 by identifying and running the local start command."

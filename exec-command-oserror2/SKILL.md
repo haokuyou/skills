@@ -1,6 +1,6 @@
 ---
 name: exec-command-oserror2
-description: "Diagnose exec_command CreateProcess failures with \"No such file or directory (os error 2)\" by checking workdir existence, command paths, and executable permissions. Use when exec_command returns CreateProcess/Rejected errors (Rejected(\"Failed to create unified exec process: No such file or directory (os error 2)\")) or when a wrong workdir/relative script path is suspected."
+description: "Diagnose exec_command CreateProcess failures with \"No such file or directory (os error 2)\" by checking workdir existence, command paths, and executable permissions. Use when exec_command returns CreateProcess/Rejected errors (Rejected(\"Failed to create unified exec process: No such file or directory (os error 2)\")) or when a wrong workdir/relative script path is suspected, including localized absolute paths."
 ---
 
 # Exec Command OSError 2
@@ -20,11 +20,12 @@ Trigger signature:
 ## Workflow
 
 1. Confirm `workdir` exists and matches the intended project path.
-2. Resolve the command:
+2. If the failing `workdir` includes spaces or non-ASCII characters, compare the exact absolute path against `pwd` instead of rewriting it manually.
+3. Resolve the command:
    - If the command is relative (e.g. `./check_build.sh`), resolve it against `workdir`.
    - If the command is a binary name (e.g. `rg`), check it exists in `PATH`.
-3. If the file exists but is not executable, add execute permission before re-run.
-4. If `PATH` is the issue, prefer absolute paths or an inline PATH (see `$path-update-warning`).
+4. If the file exists but is not executable, add execute permission before re-run.
+5. If `PATH` is the issue, prefer absolute paths or an inline PATH (see `$path-update-warning`).
 
 ## Interpreting the checker output
 

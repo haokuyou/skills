@@ -1,6 +1,6 @@
 ---
 name: apply-patch-missing-file
-description: "Diagnose apply_patch verification failures caused by missing target files or wrong working directories, especially `apply_patch verification failed: Failed to read file to update ... (os error 2)`. Use when patching fails before diff application due to path resolution issues."
+description: "Diagnose apply_patch verification failures caused by missing target files or wrong working directories, especially `apply_patch verification failed: Failed to read file to update ... (os error 2)`. Use when patching fails before diff application due to path resolution issues, including absolute paths under space-heavy or non-ASCII folders."
 ---
 
 # Apply Patch Missing File
@@ -27,12 +27,13 @@ Trigger signatures:
 ## Workflow
 
 1. Extract the failed file path from the error text.
-2. Check whether the path is absolute.
-3. If absolute path does not exist, find correct file with `rg --files | rg '<filename>$'`.
-4. If relative path was intended, ensure `apply_patch` path is relative to the actual repository root.
-5. Verify `workdir` matches the repository where the file exists.
-6. Retry patch only after `test -f` confirms the target file exists.
-7. If the same missing-file signature repeats for multiple files in one task, stop retrying patches and re-confirm the repository root once before any further `apply_patch`.
+2. Preserve the exact path string if it contains spaces or non-ASCII characters; do not hand-trim or retype the failing path before verification.
+3. Check whether the path is absolute.
+4. If absolute path does not exist, find correct file with `rg --files | rg '<filename>$'`.
+5. If relative path was intended, ensure `apply_patch` path is relative to the actual repository root.
+6. Verify `workdir` matches the repository where the file exists.
+7. Retry patch only after `test -f` confirms the target file exists.
+8. If the same missing-file signature repeats for multiple files in one task, stop retrying patches and re-confirm the repository root once before any further `apply_patch`.
 
 ## Decision rules
 
@@ -41,6 +42,7 @@ Trigger signatures:
 - Do not guess unknown paths; locate exact file first.
 - Prefer absolute workspace validation (`pwd`, `ls`) before patch retry.
 - Repeated `os error 2` lines in the same task usually mean path context is wrong, not that each file separately disappeared.
+- Localized directory names do not break `apply_patch` by themselves; the usual root cause is wrong root or wrong relative path.
 
 ## Example
 
