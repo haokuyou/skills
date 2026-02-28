@@ -19,6 +19,7 @@ Restore Accessibility access on macOS for the app that is blocked. Use a short d
 ## Decision tree
 
 - If the app shows text like `需要辅助功能权限`, `无障碍权限`, or says paste/UI automation requires System Settings approval:
+- If the app shows text like `需要辅助功能权限`, `无障碍权限`, `SmartAccess 使用辅助功能权限来提供以下无障碍功能：`, or `本应用需要辅助功能权限才能正常使用粘贴功能`:
   - Open the Accessibility pane with the helper script.
   - Turn on the target app (Terminal, iTerm, Hammerspoon, the app itself, etc.).
   - Quit and relaunch the app, then retry the action.
@@ -45,6 +46,7 @@ Restore Accessibility access on macOS for the app that is blocked. Use a short d
 - Accessibility permission changes usually require quitting and relaunching the affected app.
 - CLI automation inherits permissions from the host app, so fix Terminal/iTerm first when shell commands drive UI automation.
 - Repeated in-app warnings about 辅助功能权限 are usually configuration problems, not code bugs.
+- If the same in-app warning repeats in one session, stop retrying the feature and confirm the host app is actually enabled in System Settings before changing code.
 
 ## Resources
 

@@ -30,6 +30,7 @@ Trigger signature:
 - Keep the process alive (use a shell or a long-running command) before sending input.
 - Use `{"cmd":"bash","tty":true}` as a safe default opener for interactive sessions.
 - On `write_stdin failed: stdin is closed`, re-run the command with `tty=true` and reuse the new `session_id`.
+- If the same `write_stdin failed` line appears twice in one task, stop retrying against the old session and restart from a fresh TTY-backed opener immediately.
 - If a tool may prompt later (ssh login, REPL, installer, long-running CLI), still start with `tty=true` even if the first step is only launching it.
 - If you only need to poll output from a live TTY session, use `write_stdin` on that same `session_id` instead of spawning a separate probe command.
 

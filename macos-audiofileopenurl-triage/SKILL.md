@@ -14,6 +14,7 @@ Identify why AudioToolbox or afinfo cannot open an audio file and apply a minima
 - Run the checker script with the exact file path(s):
   - `bash /Users/chappie/.codex/skills/macos-audiofileopenurl-triage/scripts/check_audiofileopenurl.sh "/absolute/path/to/file.wav"`
 - If the same `Fail: AudioFileOpenURL failed` line repeats in one session, stop retrying `afinfo` manually and run the checker script once first.
+- If the same line repeats three or more times in one task, treat it as one failed probe and keep only one diagnostic excerpt in the report.
 - If repeated copies all point to the same log line and file, treat them as one retry loop and collect evidence once before changing the file.
 - If the script reports `NOT_FOUND` or `NOT_READABLE`, fix the path or permissions first.
 - If `afinfo` fails but `file` reports a non-audio type, re-export or convert the asset.

@@ -192,6 +192,8 @@ def first_meaningful_request_line(text: str) -> Optional[str]:
             continue
         if re.match(r"^\d+[.)]\s+", line):
             continue
+        if re.match(r"^<[A-Za-z_][A-Za-z0-9_.-]*>[^<]{0,200}</[A-Za-z_][A-Za-z0-9_.-]*>$", line):
+            continue
         if any(token in line for token in SKIP_REQUEST_CONTAINS):
             continue
         if any(line.startswith(prefix) for prefix in SKIP_REQUEST_PREFIXES):
@@ -274,10 +276,14 @@ def cluster_add(
 ) -> None:
     entry = buckets.get(signature)
     if entry is None:
-        entry = {"signature": signature, "count": 0, "samples": []}
+        entry = {"signature": signature, "count": 0, "samples": [], "_sample_keys": set()}
         buckets[signature] = entry
     entry["count"] += 1
+    sample_key = (path, line_no, sample_text)
+    if sample_key in entry["_sample_keys"]:
+        return
     if len(entry["samples"]) < max_samples:
+        entry["_sample_keys"].add(sample_key)
         entry["samples"].append({"path": path, "line": line_no, "text": clip(sample_text)})
 
 
@@ -344,12 +350,16 @@ def triage(
     failure_list = sorted(failure_clusters.values(), key=lambda x: x["count"], reverse=True)
     if max_classes > 0:
         failure_list = failure_list[:max_classes]
+    for item in failure_list:
+        item.pop("_sample_keys", None)
 
     user_list = sorted(user_clusters.values(), key=lambda x: x["count"], reverse=True)
     if min_user_count > 1:
         user_list = [item for item in user_list if item["count"] >= min_user_count]
     if max_user_classes > 0:
         user_list = user_list[:max_user_classes]
+    for item in user_list:
+        item.pop("_sample_keys", None)
 
     return {
         "generated_at": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),

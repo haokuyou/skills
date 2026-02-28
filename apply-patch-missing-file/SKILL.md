@@ -18,6 +18,7 @@ Trigger signatures:
 
 1. Check path context before retrying:
    - If the failing path is absolute, compare its repository prefix against the current `workdir` first.
+   - If the failing path sits under a localized folder such as `/Users/chappie/Documents/我制作/...`, preserve that exact path and verify the real repo root before editing.
 2. Parse and classify the error:
    - `python3 /Users/chappie/.codex/skills/apply-patch-missing-file/scripts/triage_apply_patch_missing_file.py --error "<full apply_patch error>" --workdir "<current workdir>"`
 3. Apply the first valid fix:
@@ -46,6 +47,7 @@ Trigger signatures:
 - Prefer absolute workspace validation (`pwd`, `ls`) before patch retry.
 - Repeated `os error 2` lines in the same task usually mean path context is wrong, not that each file separately disappeared.
 - Localized directory names do not break `apply_patch` by themselves; the usual root cause is wrong root or wrong relative path.
+- If multiple retries all fail against the same non-ASCII project tree, stop retyping the path and switch to `rg --files` from the intended repo root once.
 
 ## Example
 
