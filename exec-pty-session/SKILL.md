@@ -22,6 +22,7 @@ Trigger signature:
 6. If the session log repeatedly shows `write_stdin failed: stdin is closed`, treat it as a workflow bug and always start the first exec_command with `tty=true`.
 7. Avoid starting with commands that exit immediately (e.g., `pwd`, `echo`) when you plan to call write_stdin.
 8. If you know you will call `write_stdin` even once, do not "probe" with a non-TTY exec first; open the persistent TTY session as the first command.
+9. Do not reuse a `session_id` returned from a non-TTY exec; restart the command as TTY-backed instead of retrying `write_stdin` against the closed session.
 
 ## Recovery checklist
 
@@ -30,6 +31,7 @@ Trigger signature:
 - Use `{"cmd":"bash","tty":true}` as a safe default opener for interactive sessions.
 - On `write_stdin failed: stdin is closed`, re-run the command with `tty=true` and reuse the new `session_id`.
 - If a tool may prompt later (ssh login, REPL, installer, long-running CLI), still start with `tty=true` even if the first step is only launching it.
+- If you only need to poll output from a live TTY session, use `write_stdin` on that same `session_id` instead of spawning a separate probe command.
 
 ## Examples
 

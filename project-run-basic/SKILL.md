@@ -21,7 +21,9 @@ Detect likely run commands from common project files, then run the most appropri
 2. Choose the safest default
    - Prefer `dev` or `start` scripts when present.
    - For Makefile, prefer `run` or `start` targets.
-3. Run the command and report output
+3. Normalize terse requests
+   - Treat one-line prompts like `运行项目` or `运行本项目` as permission to inspect common entrypoints first instead of asking for more wording.
+4. Run the command and report output
    - If it fails, capture the error and switch to a fallback from the hints.
 
 ## Script reference

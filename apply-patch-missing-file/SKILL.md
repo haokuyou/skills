@@ -16,13 +16,15 @@ Trigger signatures:
 
 ## Quick start
 
-1. Parse and classify the error:
+1. Check path context before retrying:
+   - If the failing path is absolute, compare its repository prefix against the current `workdir` first.
+2. Parse and classify the error:
    - `python3 /Users/chappie/.codex/skills/apply-patch-missing-file/scripts/triage_apply_patch_missing_file.py --error "<full apply_patch error>" --workdir "<current workdir>"`
-2. Apply the first valid fix:
+3. Apply the first valid fix:
    - Correct target path.
    - Or correct `workdir`.
    - Or create/move file only if the task clearly requires a new file.
-3. Re-run `apply_patch` with the corrected path context.
+4. Re-run `apply_patch` with the corrected path context.
 
 ## Workflow
 
@@ -32,8 +34,9 @@ Trigger signatures:
 4. If absolute path does not exist, find correct file with `rg --files | rg '<filename>$'`.
 5. If relative path was intended, ensure `apply_patch` path is relative to the actual repository root.
 6. Verify `workdir` matches the repository where the file exists.
-7. Retry patch only after `test -f` confirms the target file exists.
-8. If the same missing-file signature repeats for multiple files in one task, stop retrying patches and re-confirm the repository root once before any further `apply_patch`.
+7. If the failing absolute path points into another repo tree, switch `workdir` or patch the real file path instead of retyping the same path.
+8. Retry patch only after `test -f` confirms the target file exists.
+9. If the same missing-file signature repeats for multiple files in one task, stop retrying patches and re-confirm the repository root once before any further `apply_patch`.
 
 ## Decision rules
 
