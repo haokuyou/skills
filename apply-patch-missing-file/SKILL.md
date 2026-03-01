@@ -9,6 +9,7 @@ description: "Diagnose apply_patch verification failures caused by missing targe
 
 Resolve `apply_patch` path failures deterministically before retrying patch operations.  
 Focus on quick checks for absolute/relative path mismatch, wrong `workdir`, and non-existent files.
+This skill is split into apply-patch-missing-file/apply-patch-context-mismatch; use apply-patch-context-mismatch for `Failed to find expected lines` or `stream did not contain valid UTF-8`.
 
 Trigger signatures:
 - `apply_patch verification failed: Failed to read file to update ...: No such file or directory (os error 2)`

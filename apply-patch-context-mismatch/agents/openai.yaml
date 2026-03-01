@@ -1,0 +1,4 @@
+interface:
+  display_name: "Apply Patch Context Mismatch"
+  short_description: "排查 apply_patch 的 Failed to find expected lines 与上下文漂移问题。"
+  default_prompt: "处理 apply_patch 的上下文不匹配报错，先定位目标文件与锚点偏移，再给出最小可重试修复步骤。"
