@@ -1,0 +1,4 @@
+interface:
+  display_name: "Curl 连接失败排查"
+  short_description: "排查并修复 curl: (7) 无法连接本地服务的重复失败。"
+  default_prompt: "当出现 curl: (7) Failed to connect 或 Process exited with code 7 时，先判断服务是否启动、端口是否监听，再执行带等待的探测并给出最小修复动作。"

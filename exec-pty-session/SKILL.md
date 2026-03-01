@@ -26,6 +26,7 @@ Quick recovery helper:
 7. Avoid starting with commands that exit immediately (e.g., `pwd`, `echo`) when you plan to call write_stdin.
 8. If you know you will call `write_stdin` even once, do not "probe" with a non-TTY exec first; open the persistent TTY session as the first command.
 9. Do not reuse a `session_id` returned from a non-TTY exec; restart the command as TTY-backed instead of retrying `write_stdin` against the closed session.
+10. If `stdin is closed` appears more than once in a task, stop all writes to old sessions and open one fresh TTY session immediately.
 
 ## Recovery checklist
 
@@ -34,6 +35,7 @@ Quick recovery helper:
 - Use `{"cmd":"bash","tty":true}` as a safe default opener for interactive sessions.
 - On `write_stdin failed: stdin is closed`, re-run the command with `tty=true` and reuse the new `session_id`.
 - If the same `write_stdin failed` line appears twice in one task, stop retrying against the old session and restart from a fresh TTY-backed opener immediately.
+- Run `python3 /Users/chappie/.codex/skills/exec-pty-session/scripts/recover_write_stdin.py --error "<error>" --cmd "bash"` when you need a deterministic restart plan.
 - If a tool may prompt later (ssh login, REPL, installer, long-running CLI), still start with `tty=true` even if the first step is only launching it.
 - If you only need to poll output from a live TTY session, use `write_stdin` on that same `session_id` instead of spawning a separate probe command.
 

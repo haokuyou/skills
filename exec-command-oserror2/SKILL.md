@@ -18,6 +18,7 @@ Trigger signature:
 4. Fix the first failing item in this order: workdir -> command path -> executable bit.
 5. Re-run the same exec_command with the corrected workdir or absolute command path.
 6. If the failing tool is `apply_patch` (not `exec_command`), use `apply-patch-missing-file` instead.
+7. If this signature appears repeatedly in one task, keep one sample and stop blind retries until checker output changes.
 
 ## Workflow
 
@@ -28,6 +29,7 @@ Trigger signature:
    - If the command is a binary name (e.g. `rg`), check it exists in `PATH`.
 4. If the file exists but is not executable, add execute permission before re-run.
 5. If `PATH` is the issue, prefer absolute paths or an inline PATH (see `$path-update-warning`).
+6. If checker output is stable across retries, switch to a concrete fix action instead of re-running the same command.
 
 ## Interpreting the checker output
 
