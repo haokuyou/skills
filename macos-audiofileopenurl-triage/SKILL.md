@@ -17,6 +17,7 @@ Identify why AudioToolbox or afinfo cannot open an audio file and apply a minima
 - If repeated copies come from the same task, keep one failing sample path and one checker result instead of stacking more `afinfo` retries.
 - If the same line repeats three or more times in one task, treat it as one failed probe and keep only one diagnostic excerpt in the report.
 - If repeated copies all point to the same log line and file, treat them as one retry loop and collect evidence once before changing the file.
+- Preserve one failing `afinfo` line plus one checker run as canonical evidence; avoid attaching repeated identical `Fail: AudioFileOpenURL failed` lines.
 - If the script reports `NOT_FOUND` or `NOT_READABLE`, fix the path or permissions first.
 - If `afinfo` fails but `file` reports a non-audio type, re-export or convert the asset.
 

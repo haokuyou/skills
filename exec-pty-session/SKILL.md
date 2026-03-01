@@ -12,6 +12,9 @@ Keep interactive exec_command runs alive with a TTY-backed session so write_stdi
 Trigger signature:
 - `write_stdin failed: stdin is closed for this session; rerun exec_command with tty=true to keep stdin open`
 
+Quick recovery helper:
+- `python3 /Users/chappie/.codex/skills/exec-pty-session/scripts/recover_write_stdin.py --error "<原始报错>" --cmd "bash"`
+
 ## Workflow
 
 1. Start the interactive command with exec_command and `tty=true`.
@@ -52,3 +55,4 @@ Send input:
 
 - Avoid commands that exit immediately if you need to keep stdin open.
 - For non-interactive commands, keep `tty=false` to avoid unnecessary overhead.
+- `scripts/recover_write_stdin.py` only normalizes known closed-session signatures; unknown errors still need direct diagnosis.

@@ -14,9 +14,10 @@ Trigger signature:
 1. Run the checker to validate workdir + command path:
    - `python3 /Users/chappie/.codex/skills/exec-command-oserror2/scripts/check_exec_prereqs.py --workdir "<dir>" --cmd "<command string>"`
 2. If the same CreateProcess line repeats, stop retrying raw `exec_command` first and run the checker once.
-3. Fix the first failing item in this order: workdir -> command path -> executable bit.
-4. Re-run the same exec_command with the corrected workdir or absolute command path.
-5. If the failing tool is `apply_patch` (not `exec_command`), use `apply-patch-missing-file` instead.
+3. If repeated failures all point to the same command/workdir pair, treat them as one retry loop and keep one diagnostic sample.
+4. Fix the first failing item in this order: workdir -> command path -> executable bit.
+5. Re-run the same exec_command with the corrected workdir or absolute command path.
+6. If the failing tool is `apply_patch` (not `exec_command`), use `apply-patch-missing-file` instead.
 
 ## Workflow
 

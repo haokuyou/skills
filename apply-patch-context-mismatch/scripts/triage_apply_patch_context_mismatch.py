@@ -6,9 +6,7 @@ import re
 from typing import Dict, List, Optional
 
 
-RE_FIND_EXPECTED = re.compile(
-    r"Failed to find expected lines in (?P<path>.+?):\s*$"
-)
+RE_FIND_EXPECTED_LINE = re.compile(r"Failed to find expected lines in (?P<body>.+)$")
 RE_UTF8 = re.compile(
     r"Failed to read(?: file to update)? (?P<path>.+?): stream did not contain valid UTF-8"
 )
@@ -32,10 +30,27 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def _extract_path_from_failed_expected(error: str) -> Optional[str]:
+    # Some logs append expected-line excerpts after the first colon.
+    for line in error.splitlines():
+        m = RE_FIND_EXPECTED_LINE.search(line.strip())
+        if not m:
+            continue
+        body = m.group("body").strip()
+        # Prefer absolute Unix path before the first ": " snippet.
+        abs_m = re.search(r"(/[^:]+?)(?::\s|$)", body)
+        if abs_m:
+            return abs_m.group(1)
+        rel_m = re.search(r"([^:]+?)(?::\s|$)", body)
+        if rel_m:
+            return rel_m.group(1).strip()
+    return None
+
+
 def detect_signature(error: str) -> Dict[str, Optional[str]]:
-    m = RE_FIND_EXPECTED.search(error)
-    if m:
-        return {"type": "failed_to_find_expected_lines", "path": m.group("path")}
+    path = _extract_path_from_failed_expected(error)
+    if path:
+        return {"type": "failed_to_find_expected_lines", "path": path}
 
     m = RE_UTF8.search(error)
     if m:

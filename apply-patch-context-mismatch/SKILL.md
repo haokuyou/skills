@@ -18,6 +18,7 @@ Trigger signatures:
 
 1. Run preflight with the raw error line:
    - `python3 /Users/chappie/.codex/skills/apply-patch-context-mismatch/scripts/triage_apply_patch_context_mismatch.py --error "<full apply_patch error>" --workdir "<current workdir>"`
+   - 支持 `Failed to find expected lines in <path>: <长摘录...>` 这类“路径后拼接摘录”的报错行。
 2. If you know the intended anchor text, add `--needle "<expected line>"` to confirm whether it still exists.
 3. Apply the first recommended fix from the script:
    - switch target file if wrong;
