@@ -1,6 +1,6 @@
 ---
 name: exec-command-oserror2
-description: "Diagnose exec_command CreateProcess failures with \"No such file or directory (os error 2)\" by checking workdir existence, command paths, and executable permissions. Use when exec_command returns CreateProcess/Rejected errors (Rejected(\"Failed to create unified exec process: No such file or directory (os error 2)\")) or when a wrong workdir/relative script path is suspected, including localized absolute paths."
+description: "Diagnose exec_command CreateProcess failures with \"No such file or directory (os error 2)\" by checking workdir existence, command paths, and executable permissions. Use when session logs repeat the exact CreateProcess/Rejected signature, when exec_command returns CreateProcess/Rejected errors (Rejected(\"Failed to create unified exec process: No such file or directory (os error 2)\")), or when a wrong workdir/relative script path is suspected, including localized absolute paths."
 ---
 
 # Exec Command OSError 2
@@ -13,9 +13,10 @@ Trigger signature:
 
 1. Run the checker to validate workdir + command path:
    - `python3 /Users/chappie/.codex/skills/exec-command-oserror2/scripts/check_exec_prereqs.py --workdir "<dir>" --cmd "<command string>"`
-2. Fix the first failing item in this order: workdir -> command path -> executable bit.
-3. Re-run the same exec_command with the corrected workdir or absolute command path.
-4. If the failing tool is `apply_patch` (not `exec_command`), use `apply-patch-missing-file` instead.
+2. If the same CreateProcess line repeats, stop retrying raw `exec_command` first and run the checker once.
+3. Fix the first failing item in this order: workdir -> command path -> executable bit.
+4. Re-run the same exec_command with the corrected workdir or absolute command path.
+5. If the failing tool is `apply_patch` (not `exec_command`), use `apply-patch-missing-file` instead.
 
 ## Workflow
 

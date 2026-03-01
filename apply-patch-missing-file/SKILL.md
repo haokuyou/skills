@@ -1,6 +1,6 @@
 ---
 name: apply-patch-missing-file
-description: "Diagnose apply_patch verification failures caused by missing target files or wrong working directories, especially `apply_patch verification failed: Failed to read file to update ... (os error 2)`. Use when patching fails before diff application due to path resolution issues, including absolute paths under space-heavy or non-ASCII folders."
+description: "Diagnose apply_patch verification failures caused by missing target files or wrong working directories, especially `apply_patch verification failed: Failed to read file to update ... (os error 2)`. Use when the same missing-file line repeats during patch retries, when patching fails before diff application due to path resolution issues, or when absolute paths under space-heavy or non-ASCII folders are involved."
 ---
 
 # Apply Patch Missing File
@@ -19,6 +19,7 @@ Trigger signatures:
 1. Check path context before retrying:
    - If the failing path is absolute, compare its repository prefix against the current `workdir` first.
    - If the failing path sits under a localized folder such as `/Users/chappie/Documents/我制作/...`, preserve that exact path and verify the real repo root before editing.
+   - If the same path fails repeatedly, stop retyping it manually and run the triage script once before another patch attempt.
 2. Parse and classify the error:
    - `python3 /Users/chappie/.codex/skills/apply-patch-missing-file/scripts/triage_apply_patch_missing_file.py --error "<full apply_patch error>" --workdir "<current workdir>"`
 3. Apply the first valid fix:

@@ -1,4 +1,4 @@
 interface:
   display_name: "辅助功能权限"
-  short_description: "处理 macOS 辅助功能权限缺失、关闭或卡住导致的自动化失败。"
-  default_prompt: "处理 macOS 上提示需要辅助功能权限、无障碍权限未授权或开关失效的问题。"
+  short_description: "处理 macOS 辅助功能权限缺失、反复弹窗或开关失效导致的自动化失败。"
+  default_prompt: "处理 macOS 上反复提示需要辅助功能权限、无障碍权限未授权或 SmartAccess 类提示持续出现的问题。"

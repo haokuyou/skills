@@ -1,6 +1,6 @@
 ---
 name: macos-audiofileopenurl-triage
-description: "Diagnose macOS AudioToolbox/afinfo failures like \"Fail: AudioFileOpenURL failed\" when inspecting or reading audio files. Use when afinfo cannot open .wav/.mp3/.m4a files, when audio inspection commands fail, or when file paths/permissions/format mismatches are suspected."
+description: "Diagnose macOS AudioToolbox/afinfo failures like \"Fail: AudioFileOpenURL failed\" when inspecting or reading audio files. Use when session logs repeat that exact line, when afinfo cannot open .wav/.mp3/.m4a files, when audio inspection commands fail, or when file paths/permissions/format mismatches are suspected."
 ---
 
 # macOS AudioFileOpenURL Triage
@@ -14,6 +14,7 @@ Identify why AudioToolbox or afinfo cannot open an audio file and apply a minima
 - Run the checker script with the exact file path(s):
   - `bash /Users/chappie/.codex/skills/macos-audiofileopenurl-triage/scripts/check_audiofileopenurl.sh "/absolute/path/to/file.wav"`
 - If the same `Fail: AudioFileOpenURL failed` line repeats in one session, stop retrying `afinfo` manually and run the checker script once first.
+- If repeated copies come from the same task, keep one failing sample path and one checker result instead of stacking more `afinfo` retries.
 - If the same line repeats three or more times in one task, treat it as one failed probe and keep only one diagnostic excerpt in the report.
 - If repeated copies all point to the same log line and file, treat them as one retry loop and collect evidence once before changing the file.
 - If the script reports `NOT_FOUND` or `NOT_READABLE`, fix the path or permissions first.
