@@ -4,6 +4,10 @@ on:
   push:
   workflow_dispatch:
 
+concurrency:
+  group: sync-gitee-${{ github.repository }}
+  cancel-in-progress: false
+
 jobs:
   sync:
     runs-on: ubuntu-latest
